@@ -20,6 +20,7 @@ public class Consumer {
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(USERNAME,PASSWORD,URL);
         connection = factory.createConnection();
         connection.start();
+
         session = connection.createSession(false,Session.CLIENT_ACKNOWLEDGE);
 
         Destination queue = session.createQueue("queue");
