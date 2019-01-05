@@ -24,9 +24,9 @@ public class Producer {
         connection.start();
         /*
          *第一个参数：是否打开事务,如果打开了事务，必须commit
-         * 第二个参数：消息确认模式，一般设置为自动签收
+         * 第二个参数：消息确认模式，一般设置为CLIENT_ACKNOWLEDGE
          */
-        session = connection.createSession(false,Session.CLIENT_ACKNOWLEDGE);
+        session = connection.createSession(false,Session.SESSION_TRANSACTED);
         //通过Session创建Destination对象，指的是一个客户端用来指定生产消息目标和消费消息来源的对象
         // 在PTP模式中，Destination被称作Queue即队列；
         // 在Pub/Sub模式，Destination被称作Topic即主题。在程序中可以使用多个Queue和Topic。
