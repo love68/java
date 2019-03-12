@@ -1,20 +1,36 @@
 package cn.netty.base;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 
-public class ClientHandler extends ChannelInboundHandlerAdapter {
+public class ClientHandler extends ChannelHandlerAdapter {
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("client channelActive");
+    }
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try {
-            ByteBuf buf = (ByteBuf)msg;
-            String response = convertByteBufToString(buf);
+            System.out.println("client channelRead");
+            String response = (String)msg;
             System.out.println("收到的响应为:"+response);
         }finally {
             ReferenceCountUtil.release(msg);
         }
+    }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("client channelReadComplete");
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("client channelInactive");
     }
 
     @Override

@@ -3,18 +3,15 @@ package cn.netty.base;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 
-import java.net.InetSocketAddress;
-
-public class ServerHandler extends ChannelInboundHandlerAdapter {
+public class ServerHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("channelActive is invoked");
-        ctx.writeAndFlush(Unpooled.copiedBuffer("连接成功".getBytes()));
     }
 
     /**
@@ -26,17 +23,11 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try{
-            InetSocketAddress address = (InetSocketAddress)ctx.channel().remoteAddress();
-            System.out.println(address.getPort());
-            System.out.println(address.getAddress());
-            //doing else something
-            ByteBuf buf = (ByteBuf) msg;
-            String result = convertByteBufToString(buf);
-            System.out.println("收到客户端的信息:"+result);
-            System.out.println("开始响应");
-            //给客户端响应完成之后，关闭该客户端连接
-            ctx.writeAndFlush(Unpooled.copiedBuffer(result.getBytes())).addListener(ChannelFutureListener.CLOSE);
-            System.out.println("响应结束");
+            System.out.println("server channelRead");
+            String result = (String)msg;
+            result += "$$";
+            System.out.println(result);
+            ctx.writeAndFlush(Unpooled.copiedBuffer(result.getBytes()));//.addListener(ChannelFutureListener.CLOSE);
         }finally {
             ReferenceCountUtil.release(msg);
         }
