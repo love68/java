@@ -16,8 +16,8 @@ public class ClientHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try {
             System.out.println("client channelRead");
-            String response = (String)msg;
-            System.out.println("收到的响应为:"+response);
+            //String response = (String)msg;
+            System.out.println("收到的响应为:"+msg);
         }finally {
             ReferenceCountUtil.release(msg);
         }

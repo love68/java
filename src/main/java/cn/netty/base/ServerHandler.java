@@ -27,7 +27,7 @@ public class ServerHandler extends ChannelHandlerAdapter {
             String result = (String)msg;
             result += "$$";
             System.out.println(result);
-            ctx.writeAndFlush(Unpooled.copiedBuffer(result.getBytes()));//.addListener(ChannelFutureListener.CLOSE);
+            ctx.writeAndFlush(result);//.addListener(ChannelFutureListener.CLOSE);
         }finally {
             ReferenceCountUtil.release(msg);
         }

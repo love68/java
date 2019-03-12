@@ -11,7 +11,9 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.FixedLengthFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 
 
 public class Server {
@@ -28,10 +30,11 @@ public class Server {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-                        ByteBuf buf = Unpooled.copiedBuffer("$$".getBytes());
-                        socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, buf));
+                        //ByteBuf buf = Unpooled.copiedBuffer("$$".getBytes());
+                        //socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, buf));
+                        socketChannel.pipeline().addLast(new FixedLengthFrameDecoder(5));
                         socketChannel.pipeline().addLast(new StringDecoder());
-                        //socketChannel.pipeline().addLast(new StringEncoder());
+                        socketChannel.pipeline().addLast(new StringEncoder());
                         socketChannel.pipeline().addLast(new ServerHandler());//添加处理器
                     }
                 })

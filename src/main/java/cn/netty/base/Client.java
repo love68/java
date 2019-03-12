@@ -11,7 +11,9 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.FixedLengthFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 
 public class Client {
     public static void main(String[] args) throws Exception{
@@ -23,10 +25,11 @@ public class Client {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-                        ByteBuf buf = Unpooled.copiedBuffer("$$".getBytes());
-                        socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, buf));
+                        //ByteBuf buf = Unpooled.copiedBuffer("$$".getBytes());
+                        //socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, buf));
+                        socketChannel.pipeline().addLast(new FixedLengthFrameDecoder(5));
                         socketChannel.pipeline().addLast(new StringDecoder());
-                        //socketChannel.pipeline().addLast(new StringEncoder());
+                        socketChannel.pipeline().addLast(new StringEncoder());
                         socketChannel.pipeline().addLast(new ClientHandler());
                     }
                 })
@@ -34,8 +37,8 @@ public class Client {
                 .option(ChannelOption.SO_KEEPALIVE, true);
 
         ChannelFuture f = bootstrap.connect("127.0.0.1",8888).sync();
-        f.channel().writeAndFlush(Unpooled.copiedBuffer("中国$$china$$".getBytes()));
-        f.channel().writeAndFlush(Unpooled.copiedBuffer("ddd$$".getBytes()));
+        f.channel().writeAndFlush("7777");
+        f.channel().writeAndFlush("ddd$$");
 
 
         f.channel().closeFuture().sync();
