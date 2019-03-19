@@ -7,11 +7,18 @@ import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.ReferenceCountUtil;
 
+import java.net.InetSocketAddress;
+
 public class ServerHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println(ctx.channel().localAddress());
         System.out.println("channelActive is invoked");
+//        InetSocketAddress address = (InetSocketAddress)ctx.channel().remoteAddress();
+        InetSocketAddress address = (InetSocketAddress)ctx.channel().localAddress();
+        int port = address.getPort();
+        System.out.println("port = " + port);
     }
 
     /**
@@ -23,6 +30,9 @@ public class ServerHandler extends ChannelHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try{
+            InetSocketAddress address = (InetSocketAddress)ctx.channel().remoteAddress();
+            int port = address.getPort();
+            System.out.println("port = " + port);
             System.out.println("server channelRead");
             String result = (String)msg;
             result += "$$";
