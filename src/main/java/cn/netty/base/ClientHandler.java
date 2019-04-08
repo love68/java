@@ -5,6 +5,8 @@ import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.ReferenceCountUtil;
 
+import java.net.InetSocketAddress;
+
 public class ClientHandler extends ChannelHandlerAdapter {
 
     @Override
@@ -15,6 +17,10 @@ public class ClientHandler extends ChannelHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try {
+            InetSocketAddress address = (InetSocketAddress)ctx.channel().localAddress();
+            int port = address.getPort();
+            System.out.println("client port = " + port);
+            System.out.println("client ip = " + port);
             System.out.println("client channelRead");
             //String response = (String)msg;
             System.out.println("收到的响应为:"+msg);

@@ -99,7 +99,7 @@ public class Main {
         System.out.println(person.getClassLoader());
         //path 不以’/'开头时默认是从此类所在的包下取资源，
         // 以’/'开头则是从ClassPath根下获取。其只是通过path构造一个绝对路径，最终还是由ClassLoader获取资源。
-        InputStream in = person.getResourceAsStream("text.txt");
+        InputStream in = person.getResourceAsStream("/text.txt");
 
         System.out.println(in.read());
     }
